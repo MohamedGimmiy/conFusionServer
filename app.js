@@ -36,7 +36,7 @@ function auth(req,res,next) {
   // decoding the base64 to extract username and password
   // from authorization: 'Basic YWRtaW46cGFzc3dvcmQ=' we split the Basic and the rest of string
   // then we decode the rest of the string and extract the info we want
-  var auth = new Buffer(authHeader.split(' ')[1], 'base64').toString().split(':');
+  var auth = new Buffer.from(authHeader.split(' ')[1], 'base64').toString().split(':');
   var username = auth[0];
   var password = auth[1];
 
