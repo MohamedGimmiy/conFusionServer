@@ -3,6 +3,10 @@ var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
+var session = require('express-session');
+var FileStore = require('session-file-store')(session);
+
+
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 var dishRouter = require('./routes/dishRouter');
@@ -20,15 +24,24 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
 // providing a secret key to sign our cookies
-app.use(cookieParser('09876-12345-13567-97865'));
+// app.use(cookieParser('09876-12345-13567-97865'));
+
+// setting up our session
+app.use(session({
+  name: 'session-id',
+  secret : '09876-12345-13567-97865',
+  saveUninitialized: false,
+  resave: false,
+  store: new FileStore()
+}));
 
 function auth(req, res, next) {
 
-  console.log(req.signedCookies);
-
+  //console.log(req.signedCookies);
+  console.log(req.session)
   // if user does not include cookie in headers
   // ask user to authenticate himself
-  if (!req.signedCookies.user) {
+  if (!req.session.user) {
     // request username and password from user
     var authHeader = req.headers.authorization;
     // user did not include username and password
@@ -49,8 +62,8 @@ function auth(req, res, next) {
 
     if (username === 'admin' && password === 'password') {
       // pass to next middleware (you are allowed)
-      // setup our signed cookie (  (user: admin) , signedCookie = true)
-      res.cookie('user','admin',{signed: true})
+      // setup our signed session (  (user: admin) )
+      req.session.user = 'admin';
       next();
     }
     else {
@@ -61,8 +74,8 @@ function auth(req, res, next) {
     }
   }
   else {
-    // user has a cookie setup
-    if(req.signedCookies.user === 'admin'){
+    // user has a session setup
+    if(req.session.user === 'admin'){
       next();
     } else{
       // cookie is not valid
