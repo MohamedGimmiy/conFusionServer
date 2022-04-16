@@ -19,6 +19,42 @@ app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
+
+function auth(req,res,next) {
+
+  console.log(req.headers);
+  // request username and password from user
+  var authHeader = req.headers.authorization;
+  // user did not include username and password
+  if(authHeader == null){
+    var err = new Error('You are not authenticated');
+    res.setHeader('WWW-Authenticate', 'Basic');
+    err.status = 401;
+    return next(err);
+  }
+
+  // decoding the base64 to extract username and password
+  // from authorization: 'Basic YWRtaW46cGFzc3dvcmQ=' we split the Basic and the rest of string
+  // then we decode the rest of the string and extract the info we want
+  var auth = new Buffer(authHeader.split(' ')[1], 'base64').toString().split(':');
+  var username = auth[0];
+  var password = auth[1];
+
+  if(username === 'admin' && password === 'password'){
+    // pass to next middleware (you are allowed)
+    next();
+  }
+  else {
+    var err = new Error('You are not authenticated');
+    res.setHeader('WWW-Authenticate', 'Basic');
+    err.status = 401;
+    return next(err);
+  }
+
+}
+
+// Basic authentication
+app.use(auth);
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', indexRouter);
@@ -29,6 +65,9 @@ app.use('/leaders',leaderRouter)
 
 const mongoose = require('mongoose');
 const Dishes = require('./models/dishes')
+const Leaders = require('./models/leaders')
+const Promotions = require('./models/promotions')
+
 const url = "mongodb://localhost:27017/conFusion";
 
 const connect = mongoose.connect(url);
