@@ -35,64 +35,41 @@ app.use(session({
   store: new FileStore()
 }));
 
+
+app.use('/', indexRouter);
+app.use('/users', usersRouter);
+
 function auth(req, res, next) {
 
-  //console.log(req.signedCookies);
   console.log(req.session)
-  // if user does not include cookie in headers
-  // ask user to authenticate himself
+  // if user is not authenticated
   if (!req.session.user) {
-    // request username and password from user
-    var authHeader = req.headers.authorization;
     // user did not include username and password
-    if (authHeader == null) {
       var err = new Error('You are not authenticated');
-      res.setHeader('WWW-Authenticate', 'Basic');
-      err.status = 401;
+      err.status = 403;
       return next(err);
-    }
-
-    // decoding the base64 to extract username and password
-    // from authorization: 'Basic YWRtaW46cGFzc3dvcmQ=' we split the Basic and the rest of string
-    // then we decode the rest of the string and extract the info we want
-
-    var auth = new Buffer.from(authHeader.split(' ')[1], 'base64').toString().split(':');
-    var username = auth[0];
-    var password = auth[1];
-
-    if (username === 'admin' && password === 'password') {
-      // pass to next middleware (you are allowed)
-      // setup our signed session (  (user: admin) )
-      req.session.user = 'admin';
-      next();
     }
     else {
-      var err = new Error('You are not authenticated');
-      res.setHeader('WWW-Authenticate', 'Basic');
-      err.status = 401;
-      return next(err);
-    }
-  }
-  else {
-    // user has a session setup
-    if(req.session.user === 'admin'){
-      next();
-    } else{
-      // cookie is not valid
-      var err = new Error('You are not authenticated');
-      err.status = 401;
-      return next(err);
+      // user is authenticated
+      if(req.session.user === 'authenticated'){
+        next();
+      }
+      else {
+        var err = new Error('You are not authenticated');
+        err.status = 403;
+        return next(err);
+      }
     }
   }
 
-}
+
+
 
 // Basic authentication
 app.use(auth);
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.use('/', indexRouter);
-app.use('/users', usersRouter);
+
 app.use('/dishes', dishRouter)
 app.use('/promotions', promoRouter)
 app.use('/leaders', leaderRouter)
