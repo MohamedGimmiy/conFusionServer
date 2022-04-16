@@ -18,37 +18,58 @@ app.set('view engine', 'jade');
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
-app.use(cookieParser());
 
-function auth(req,res,next) {
+// providing a secret key to sign our cookies
+app.use(cookieParser('09876-12345-13567-97865'));
 
-  console.log(req.headers);
-  // request username and password from user
-  var authHeader = req.headers.authorization;
-  // user did not include username and password
-  if(authHeader == null){
-    var err = new Error('You are not authenticated');
-    res.setHeader('WWW-Authenticate', 'Basic');
-    err.status = 401;
-    return next(err);
-  }
+function auth(req, res, next) {
 
-  // decoding the base64 to extract username and password
-  // from authorization: 'Basic YWRtaW46cGFzc3dvcmQ=' we split the Basic and the rest of string
-  // then we decode the rest of the string and extract the info we want
-  var auth = new Buffer.from(authHeader.split(' ')[1], 'base64').toString().split(':');
-  var username = auth[0];
-  var password = auth[1];
+  console.log(req.signedCookies);
 
-  if(username === 'admin' && password === 'password'){
-    // pass to next middleware (you are allowed)
-    next();
+  // if user does not include cookie in headers
+  // ask user to authenticate himself
+  if (!req.signedCookies.user) {
+    // request username and password from user
+    var authHeader = req.headers.authorization;
+    // user did not include username and password
+    if (authHeader == null) {
+      var err = new Error('You are not authenticated');
+      res.setHeader('WWW-Authenticate', 'Basic');
+      err.status = 401;
+      return next(err);
+    }
+
+    // decoding the base64 to extract username and password
+    // from authorization: 'Basic YWRtaW46cGFzc3dvcmQ=' we split the Basic and the rest of string
+    // then we decode the rest of the string and extract the info we want
+
+    var auth = new Buffer.from(authHeader.split(' ')[1], 'base64').toString().split(':');
+    var username = auth[0];
+    var password = auth[1];
+
+    if (username === 'admin' && password === 'password') {
+      // pass to next middleware (you are allowed)
+      // setup our signed cookie (  (user: admin) , signedCookie = true)
+      res.cookie('user','admin',{signed: true})
+      next();
+    }
+    else {
+      var err = new Error('You are not authenticated');
+      res.setHeader('WWW-Authenticate', 'Basic');
+      err.status = 401;
+      return next(err);
+    }
   }
   else {
-    var err = new Error('You are not authenticated');
-    res.setHeader('WWW-Authenticate', 'Basic');
-    err.status = 401;
-    return next(err);
+    // user has a cookie setup
+    if(req.signedCookies.user === 'admin'){
+      next();
+    } else{
+      // cookie is not valid
+      var err = new Error('You are not authenticated');
+      err.status = 401;
+      return next(err);
+    }
   }
 
 }
@@ -59,32 +80,33 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
-app.use('/dishes',dishRouter)
-app.use('/promotions',promoRouter)
-app.use('/leaders',leaderRouter)
+app.use('/dishes', dishRouter)
+app.use('/promotions', promoRouter)
+app.use('/leaders', leaderRouter)
 
 const mongoose = require('mongoose');
 const Dishes = require('./models/dishes')
 const Leaders = require('./models/leaders')
-const Promotions = require('./models/promotions')
+const Promotions = require('./models/promotions');
+const { signedCookies } = require('cookie-parser');
 
 const url = "mongodb://localhost:27017/conFusion";
 
 const connect = mongoose.connect(url);
 
-connect.then(db=>{
+connect.then(db => {
   console.log('connected correctly!');
-}).catch(err=>{
+}).catch(err => {
   console.log(err);
 })
 
 // catch 404 and forward to error handler
-app.use(function(req, res, next) {
+app.use(function (req, res, next) {
   next(createError(404));
 });
 
 // error handler
-app.use(function(err, req, res, next) {
+app.use(function (err, req, res, next) {
   // set locals, only providing error in development
   res.locals.message = err.message;
   res.locals.error = req.app.get('env') === 'development' ? err : {};
