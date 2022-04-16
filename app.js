@@ -5,6 +5,8 @@ var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 var session = require('express-session');
 var FileStore = require('session-file-store')(session);
+var passport = require('passport')
+var authenticate = require('./authenticate');
 
 
 var indexRouter = require('./routes/index');
@@ -35,34 +37,25 @@ app.use(session({
   store: new FileStore()
 }));
 
+// using passport and passport-session
+app.use(passport.initialize());
+app.use(passport.session())
 
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
 
-function auth(req, res, next) {
+function auth (req, res, next) {
+  console.log(req.user);
 
-  console.log(req.session)
-  // if user is not authenticated
-  if (!req.session.user) {
-    // user did not include username and password
-      var err = new Error('You are not authenticated');
-      err.status = 403;
-      return next(err);
-    }
-    else {
-      // user is authenticated
-      if(req.session.user === 'authenticated'){
-        next();
-      }
-      else {
-        var err = new Error('You are not authenticated');
-        err.status = 403;
-        return next(err);
-      }
-    }
+  if (!req.user) {
+    var err = new Error('You are not authenticated!');
+    err.status = 403;
+    next(err);
   }
-
-
+  else {
+        next();
+  }
+}
 
 
 // Basic authentication
