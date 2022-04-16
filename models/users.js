@@ -10,6 +10,7 @@ var User = new Schema({
     }
 });
 
+// add register function for signup and offers user & password in schema
 User.plugin(passportLocalMongoose);
 
 module.exports = mongoose.model('User',User);
