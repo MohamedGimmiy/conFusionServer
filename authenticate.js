@@ -16,7 +16,7 @@ passport.deserializeUser(User.deserializeUser());
 //------------------ export function of generating token --------------------//
 exports.getToken = (user) =>{
     return jwt.sign(user, config.secretKey, 
-        { expiresIn: 3600});
+        { expiresIn: 8000});
 }
 //-----------------------------------------------------------------------//
 var opts = {};
@@ -40,4 +40,27 @@ exports.jwtPassport = passport.use(new JwtStrategy(opts, (jwt_payload, done)=>{
 
 exports.verifyUser = passport.authenticate('jwt', {session:false});
 
+exports.verifyAdmin = (req,res,next) =>{
+
+    // if there is no user
+    if(req.user == null){
+        var err = new Error('You are not authenticated!');
+        res.statusCode = 403;
+        res.setHeader('Content-Type','text/plain');
+        next(err);
+        return;
+    }
+
+    // if it is ordinary user
+    if(req.user.admin != true){
+        var err = new Error('You are not authorized to perform this operation!');
+        res.statusCode = 403;
+        err.status = 403;
+        res.setHeader('Content-Type','text/plain');
+        return next(err);
+    }
+    else{
+        return next();
+    }
+}
 //------------------------------------------------------------//
