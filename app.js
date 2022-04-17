@@ -16,6 +16,16 @@ var promoRouter = require('./routes/promoRouter');
 var leaderRouter = require('./routes/leaderRouter');
 
 var app = express();
+// redirect all traffic to secure server
+app.all('*',(req,res,next) => {
+  if(req.secure){
+    return next();
+  } // insecure port to be reditrected to our secure url
+  else {
+    // 307 is status to not to change the redirected req
+    res.redirect(307, 'https://' + req.hostname + ':' + app.get('secPort') + req.url);
+  }
+});
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
