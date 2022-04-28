@@ -15,6 +15,7 @@ var dishRouter = require('./routes/dishRouter');
 var promoRouter = require('./routes/promoRouter');
 var leaderRouter = require('./routes/leaderRouter');
 var uploadRouter = require('./routes/uploadRouter');
+var FavoriteRouter = require('./routes/favoritesRouter');
 
 var app = express();
 // redirect all traffic to secure server
@@ -53,6 +54,7 @@ app.use('/dishes', dishRouter)
 app.use('/promotions', promoRouter)
 app.use('/leaders', leaderRouter)
 app.use('/imageUpload', uploadRouter)
+app.use('/favorites', FavoriteRouter)
 
 const mongoose = require('mongoose');
 const Dishes = require('./models/dishes')

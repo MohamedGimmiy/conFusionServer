@@ -33,7 +33,7 @@ dishRouter.route('/')
         )
             .then(dish => {
                 console.log('Dish created ' + dish);
-                res.statusCode = 200;
+                res.statusCode = 201;
                 res.setHeader('Content-Type', 'application/json');
                 res.json(dish);
             }, err => next(err))
