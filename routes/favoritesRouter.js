@@ -19,7 +19,7 @@ FavoriteRouter.route('/')
     //TODO filter by user favorites
     Favorite.find({user: req.user._id})
     .populate('user')
-    .populate('dishes.dish')
+    .populate('dishes')
     .then(favorite=>{
         res.statusCode = 200;
         res.setHeader('Content-Type','application/json');
@@ -33,34 +33,48 @@ FavoriteRouter.route('/')
     // For each dish insert it into favorites
     //TODO filter dishes if it exits in favorite list so do not add them
         // get the favorite json object of our user
-        Favorite.findOneAndUpdate({user:req.user._id},{$push:{
-            dishes: req.body}})
-        .populate('dishes')
-        .populate('user')
-        .then(favorite =>{
-            // user first create favorite document
-            if(favorite){
-                res.statusCode = 201;
-                res.setHeader('Content-Type','application/json');
-                res.json(favorite);
-                next();
-                return;
-            }
-            else {
+        Favorite.find({user:req.user._id})
+        .then(favorite => {
+            if(favorite.length === 0 ){
+                // insert all
                 Favorite.create({
-                    user: req.user._id,
-                    dishes: req.body
+                    user : req.user._id,
+                    dishes:[...req.body]
                 })
                 .then(fav=>{
                     res.statusCode = 201;
                     res.setHeader('Content-Type','application/json');
                     res.json(fav);
+                    return;
                 },err=>next(err))
-                .catch(err=>next(err))
-                
+                .catch(err=>next(err));
             }
+            // extract not existed elements
+            var uniqueElements = req.body.filter(item => !favorite[0].dishes.includes(item._id));
+                console.log(favorite[0].dishes)
+                console.log(req.body)
+                    console.log('pushed')
+                    console.log(uniqueElements)
+                    const mapping = uniqueElements.map(ele => ele._id);
+                    // if it does not exist
+                    if(uniqueElements.length !== 0){
+                        favorite[0].dishes.push(...mapping);
+                        favorite[0].save()
+                        .then(fav => {
+                            res.statusCode = 201;
+                            res.setHeader('Content-Type','application/json');
+                            res.send(fav);
+                        }, err=>next(err))
+                        .catch(err=>next(err));
+                    }else{
+                        res.statusCode = 409;
+                        res.setHeader('Content-Type','application/json');
+                        res.send('Already exist');
+                    }
+
+
         }, err=>next(err))
-        .catch(err => next(err));
+        .catch(err=>next(err));
 })
 
 .put(cors.corsWithOptions, authenticate.verifyUser, authenticate.verifyAdmin,(req,res,next)=> {
@@ -84,47 +98,51 @@ FavoriteRouter.route('/')
 FavoriteRouter.route('/:dishId')
 .options(cors.corsWithOptions, (req, res) => { res.sendStatus(200); })
 .get(cors.corsWithOptions, (req,res,next) => {
-    Favorite.find({dish: req.params.dishId})
-    .populate('dishes.dish')
-    .populate('user')
-    .then(favorite=>{
-        res.statusCode = 200;
-        res.setHeader('Content-Type','application/json');
-        res.json(favorite);
-    }, err=>next(err))
-    .catch(err=>next(err));
+    res.statusCode = 403;
+    res.end('GET operation not supported on favorites/' + req.params.dishId);
 })
 
 //Done except make sure it does not exist
+//TODO array of strings
 .post(cors.corsWithOptions, authenticate.verifyUser,(req,res,next)=> {
-    Favorite.findOneAndUpdate({user:req.user._id},{$push:{
-        dishes: {dish: req.params.dishId}}},{new : true})
-    .populate('dishes.dish')
-    .populate('user')
-    .then(favorite =>{
-        // user first create favorite document
-        if(favorite){
-            res.statusCode = 201;
-            res.setHeader('Content-Type','application/json');
-            res.json(favorite);
-            next();
-            return;
-        }
-        else {
+    Favorite.find({user:req.user._id})
+    .then(favorite => {
+        if(favorite[0] === undefined){
+            console.log('created')
+            console.log(favorite)
             Favorite.create({
-                user: req.user._id,
-                dishes: req.body
+                user : req.user._id,
+                dishes:[req.params.dishId]
             })
             .then(fav=>{
                 res.statusCode = 201;
                 res.setHeader('Content-Type','application/json');
                 res.json(fav);
             },err=>next(err))
-            .catch(err=>next(err))
+            .catch(err=>next(err));
+        }
+        else{
+            console.log('pushed')
+            // if it does not exist
+            if(favorite[0].dishes.indexOf(req.params.dishId) == -1){
+                favorite[0].dishes.push(req.params.dishId);
+                favorite[0].save()
+                .then(fav => {
+                    res.statusCode = 201;
+                    res.setHeader('Content-Type','application/json');
+                    res.json(fav);
+                }, err=>next(err))
+                .catch(err=>next(err));
+            } else{
+                // already exist
+                res.statusCode = 409;
+                res.setHeader('Content-Type','application/json');
+                res.send('Already exist')
+            }
             
         }
-    }, err=>next(err))
-    .catch(err => next(err));
+    },err=>next(err))
+    .catch(err=>next(err));
 })
 
 .put(cors.corsWithOptions, authenticate.verifyUser, authenticate.verifyAdmin, (req,res,next)=> {
@@ -134,7 +152,7 @@ FavoriteRouter.route('/:dishId')
 
 // Done Delete a single item from array of objects using mongoose
 .delete(cors.corsWithOptions, authenticate.verifyUser,(req,res,next) => {
-    Favorite.findOneAndUpdate({user: req.user._id},{$pull:{dishes: {dish: req.params.dishId}}})
+    Favorite.findOneAndUpdate({user: req.user._id},{$pull:{dishes: req.params.dishId}})
     .then(resp=>{
         res.statusCode = 200;
         res.setHeader('Content-Type', 'application/json');
