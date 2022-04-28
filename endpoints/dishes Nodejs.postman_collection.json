@@ -1,0 +1,205 @@
+{
+	"info": {
+		"_postman_id": "91fa25a0-20e1-4aa9-9181-97df8b7b0401",
+		"name": "dishes Nodejs",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "localhost:3000/dishes",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "localhost:3000/dishes",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"dishes"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "localhost:3000/dishes",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:3000/dishes",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"dishes"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "localhost:3000/dishes",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "    {\r\n      \"name\": \"Uthappizza\",\r\n      \"image\": \"images/uthappizza.png\",\r\n      \"category\": \"mains\",\r\n      \"label\": \"Hot\",\r\n      \"price\": \"4.99\",\r\n      \"featured\": true,\r\n      \"description\": \"A unique combination of Indian Uthappam (pancake) and Italian pizza, topped with Cerignola olives, ripe vine cherry tomatoes, Vidalia onion, Guntur chillies and Buffalo Paneer.\",\r\n      \"comments\":[\r\n          {\r\n      \"rating\": 5,\r\n      \"comment\": \"Imagine all the eatables, living in conFusion!\",\r\n      \"author\": \"John Lemon\",\r\n      \"date\": \"2012-10-16T17:57:28.556094Z\"\r\n    },\r\n    {\r\n      \"rating\": 4,\r\n      \"comment\": \"Sends anyone to heaven, I wish I could get my mother-in-law to eat it!\",\r\n      \"author\": \"Paul McVites\",\r\n      \"date\": \"2014-09-05T17:57:28.556094Z\"\r\n    }\r\n      ]\r\n    }",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:3000/dishes",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"dishes"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "localhost:3000/dishes",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"url": {
+					"raw": "localhost:3000/dishes",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"dishes"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "localhost:3000/dishes/23",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n          \"rating\": 3,\r\n          \"comment\": \"done alot !\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:3000/dishes/6259dd907c275478e0bc3975",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"dishes",
+						"6259dd907c275478e0bc3975"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "localhost:3000/dishes/23",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"label\":\"hot\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:3000/dishes/6259c4bd4b1fb09a97471be9",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"dishes",
+						"6259c4bd4b1fb09a97471be9"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "localhost:3000/dishes/23",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"name\":\"test\", \"description\":\"test description\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:3000/dishes/6259c4bd4b1fb09a97471be9",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"dishes",
+						"6259c4bd4b1fb09a97471be9"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "localhost:3000/dishes/23",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"name\":\"test\", \"description\":\"test description\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:3000/dishes/6259c4bd4b1fb09a97471be9",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"dishes",
+						"6259c4bd4b1fb09a97471be9"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

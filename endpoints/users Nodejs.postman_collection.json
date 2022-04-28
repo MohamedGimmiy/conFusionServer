@@ -1,0 +1,180 @@
+{
+	"info": {
+		"_postman_id": "b363becd-b8b5-4c95-8dab-f9a5d24290e6",
+		"name": "users Nodejs",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "localhost:3000/users/signup",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MjVhZGY5MWQzYzQ0MzdmOWZiNWUyMDciLCJpYXQiOjE2NTAxMzU4MTgsImV4cCI6MTY1MDEzOTQxOH0.fKji-Flvq2DwKHBVqb1Fl4he683LngkiI9pMX0PfEug",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": " {\r\n        \r\n        \"name\": \"popopop\",\r\n        \"description\": \"A unique combination of Indian Uthappam (pancake) and Italian pizza, topped with Cerignola olives, ripe vine cherry tomatoes, Vidalia onion, Guntur chillies and Buffalo Paneer.\",\r\n        \"image\": \"images/uthappizza.png\",\r\n        \"category\": \"mains\",\r\n        \"label\": \"Hot\",\r\n        \"price\": 499,\r\n        \"featured\": true,\r\n        \"comments\": []\r\n\r\n    }\r\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:3000/users/signup",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"users",
+						"signup"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "localhost:3000/users/login",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": " {\r\n     \"username\" : \"mido30\", \"password\":\"123\"\r\n}\r\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:3000/users/login",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"users",
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "https://localhost:3443/imageUpload",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MjViNzFmNDM0YjUwZDFmNzY2MmEwNmQiLCJpYXQiOjE2NTAyMDY4NzMsImV4cCI6MTY1MDIxNDg3M30.EHIaX71T3eWBVYARotIQUzOLVOGRmPEZtJmHo2dWI0s",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "image",
+							"type": "file",
+							"src": "/D:/comics photos/91068635_2693443434207982_6123882465057570816_n.jpg"
+						}
+					]
+				},
+				"url": {
+					"raw": "https://localhost:3443/imageUpload",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "3443",
+					"path": [
+						"imageUpload"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "https://localhost:3443/users/facebook/token",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "EAAKWTipUNqsBAJd7MSLItSpW9bS21dDvdGCGybYPFYWYabnfMBDSfvviHxaZAgfgGjOTGoZCPicvmtQj9wvjDPJyISizmzDvM61uWmwtt6SA7W3IGTFVoZCf76Q6BtuOXzRcpK8nZA9kXRNSfUOqmk5XeGUtrE895BihBWLXQNaNhbDL0iGhSLJ44nwigKJ8ly9lcGf6IwZDZD",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "Origin",
+						"value": "https://localhost:3443",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "image",
+							"type": "file",
+							"src": "/D:/comics photos/91068635_2693443434207982_6123882465057570816_n.jpg"
+						}
+					]
+				},
+				"url": {
+					"raw": "https://localhost:3443/users/facebook/token?access-token=EAAKWTipUNqsBAJd7MSLItSpW9bS21dDvdGCGybYPFYWYabnfMBDSfvviHxaZAgfgGjOTGoZCPicvmtQj9wvjDPJyISizmzDvM61uWmwtt6SA7W3IGTFVoZCf76Q6BtuOXzRcpK8nZA9kXRNSfUOqmk5XeGUtrE895BihBWLXQNaNhbDL0iGhSLJ44nwigKJ8ly9lcGf6IwZDZD",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "3443",
+					"path": [
+						"users",
+						"facebook",
+						"token"
+					],
+					"query": [
+						{
+							"key": "access-token",
+							"value": "EAAKWTipUNqsBAJd7MSLItSpW9bS21dDvdGCGybYPFYWYabnfMBDSfvviHxaZAgfgGjOTGoZCPicvmtQj9wvjDPJyISizmzDvM61uWmwtt6SA7W3IGTFVoZCf76Q6BtuOXzRcpK8nZA9kXRNSfUOqmk5XeGUtrE895BihBWLXQNaNhbDL0iGhSLJ44nwigKJ8ly9lcGf6IwZDZD"
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

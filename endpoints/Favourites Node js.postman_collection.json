@@ -1,0 +1,202 @@
+{
+	"info": {
+		"_postman_id": "2117ca22-c008-4a25-b581-3007eb392ecd",
+		"name": "Favourites Node js",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "post list of dishes",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MjY5ZDQ4ZjFmYmRkMjYzMDZkNzNhY2MiLCJpYXQiOjE2NTExNDI4ODQsImV4cCI6MTY1MTE1MDg4NH0.LLR76IrXdcrlmrXTUjVc2OUC2Gu7doSwMEi9T1FzEGU",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "[{\r\n    \"_id\": \"6269d5a41fbdd26306d73ad5\"\r\n},{\r\n    \"_id\": \"6269d3d71fbdd26306d73aca\"\r\n}]",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:3000/favorites/",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"favorites",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "post a  dish",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MjY5ZDQ4ZjFmYmRkMjYzMDZkNzNhY2MiLCJpYXQiOjE2NTExNDI4ODQsImV4cCI6MTY1MTE1MDg4NH0.LLR76IrXdcrlmrXTUjVc2OUC2Gu7doSwMEi9T1FzEGU",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:3000/favorites/6269d5a41fbdd26306d73ad5",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"favorites",
+						"6269d5a41fbdd26306d73ad5"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get all list of dishes of a specific user",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MjY5ZDQ4ZjFmYmRkMjYzMDZkNzNhY2MiLCJpYXQiOjE2NTExNDI4ODQsImV4cCI6MTY1MTE1MDg4NH0.LLR76IrXdcrlmrXTUjVc2OUC2Gu7doSwMEi9T1FzEGU",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:3000/favorites/",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"favorites",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "delete a list of dishes of a specific user",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MjY5ZDQ4ZjFmYmRkMjYzMDZkNzNhY2MiLCJpYXQiOjE2NTExNDI4ODQsImV4cCI6MTY1MTE1MDg4NH0.LLR76IrXdcrlmrXTUjVc2OUC2Gu7doSwMEi9T1FzEGU",
+							"type": "string"
+						}
+					]
+				},
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:3000/favorites/",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"favorites",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "delete a a dish of a specific user",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MjY5ZDQ4ZjFmYmRkMjYzMDZkNzNhY2MiLCJpYXQiOjE2NTExNDI4ODQsImV4cCI6MTY1MTE1MDg4NH0.LLR76IrXdcrlmrXTUjVc2OUC2Gu7doSwMEi9T1FzEGU",
+							"type": "string"
+						}
+					]
+				},
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:3000/favorites/6269d5a41fbdd26306d73ad5",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"favorites",
+						"6269d5a41fbdd26306d73ad5"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
